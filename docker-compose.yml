@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: "SearchAPI/Dockerfile"
+    ports:
+      - 9000:80
+    volumes:
+      - C:\Work\SoftwareDev\DLSSearchEngine:/data
+  web:
+    build:
+      context: .
+      dockerfile: "Websearch/Dockerfile"
+    ports:
+      - 9001:80

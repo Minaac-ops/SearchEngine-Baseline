@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConsoleSearch
 {
@@ -12,7 +13,9 @@ namespace ConsoleSearch
         public SearchLogic(Database database)
         {
             mDatabase = database;
-            mWords = mDatabase.GetAllWords();
+            var wordTask = mDatabase.GetAllWords();
+            wordTask.Wait();
+            mWords = wordTask.Result;
         }
 
         public int GetIdOf(string word)
@@ -22,14 +25,14 @@ namespace ConsoleSearch
             return -1;
         }
 
-        public List<KeyValuePair<int, int>> GetDocuments(List<int> wordIds)
+        public async Task<List<KeyValuePair<int, int>>> GetDocuments(List<int> wordIds)
         {
-            return mDatabase.GetDocuments(wordIds);
+            return await mDatabase.GetDocuments(wordIds);
         }
 
-        public List<string> GetDocumentDetails(List<int> docIds)
+        public async Task<List<string>> GetDocumentDetails(List<int> docIds)
         {
-            return mDatabase.GetDocDetails(docIds);
+            return await mDatabase.GetDocDetails(docIds);
         }
     }
 }
