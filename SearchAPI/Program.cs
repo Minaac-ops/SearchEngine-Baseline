@@ -1,6 +1,17 @@
+using System;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using RestSharp;
+
+string urltoadd = "http://" + Environment.MachineName;
+
+var restClient = new RestClient("http://load-balancer");
+restClient.Post(new RestRequest("LoadBalancer", Method.Post)
+    .AddJsonBody(new
+    {
+        Url = urltoadd
+    }));
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +33,7 @@ var app = builder.Build();
 
 app.UseCors(config => config.AllowAnyOrigin());
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

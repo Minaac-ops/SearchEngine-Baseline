@@ -22,7 +22,7 @@ var app = builder.Build();
 
 app.UseCors(config => config.AllowAnyOrigin());
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

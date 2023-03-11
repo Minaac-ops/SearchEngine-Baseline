@@ -15,10 +15,10 @@ namespace LoadBalancer.Controllers
         }
 
         [HttpPost]
-        public int AddService([FromBody] string? url)
+        public int AddService([FromBody] ApiProp apiProp)
         {
-            Console.WriteLine("Adding service at url " + url);
-            return LoadBalancer.LoadBalancer.GetInstance().AddService(url);
+            Console.WriteLine("Adding service at url " + apiProp.Url);
+            return LoadBalancer.LoadBalancer.GetInstance().AddService(apiProp.Url);
         }
 
     }
