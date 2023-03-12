@@ -3,29 +3,30 @@
 
 // Write your JavaScript code.
 
-let viewModel = function () {
-
+let ViewModel = function () {
 
     let me = this;
-
+    
     me.searchTerms = ko.observable();
     me.hits = ko.observable();
     me.results = ko.observableArray();
     me.timeUsed = ko.observable();
-
-    me.search = function(){
+    
+    me.search = function() {
         $.ajax({
-            url: "http://localhost:9000/Search?terms="+me.searchTerms() + "&numberOfResults=10",
+            url: "http://load-balancer/LoadBalancer?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function(data) {
-                me.hits(data.documents.length);
-                me.timeUsed(data.elapsedMilliseconds);
+                me.hits(data.Hits);
+                me.timeUsed(data.TimeUsed);
                 me.results.removeAll();
-                data.documents.forEach(function(hit) {
+                data.DocumentHits.forEach(function(hit) {
                     me.results.push(hit);
                 });
+                console.log(me.hits());
+                console.log(me.timeUsed());
             }
         });
     }
-};
 
-ko.applyBindings(new viewModel());
+};
+ko.applyBindings(new ViewModel());

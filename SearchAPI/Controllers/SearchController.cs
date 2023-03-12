@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Common;
 using ConsoleSearch;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SearchAPI.Controllers
@@ -11,6 +12,7 @@ namespace SearchAPI.Controllers
     [Route("[controller]")]
     public class SearchController : ControllerBase
     {
+        [EnableCors("AllowCrossOrigin")]
         [HttpGet]
         public async Task<SearchResult> Search(string terms, int numberOfResults)
         {
@@ -56,7 +58,6 @@ namespace SearchAPI.Controllers
                 });
                 idx++;
             }
-
             return result;
         }
     }

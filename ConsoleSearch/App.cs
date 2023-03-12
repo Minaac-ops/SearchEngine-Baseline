@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Common;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace ConsoleSearch
 {
@@ -12,7 +12,6 @@ namespace ConsoleSearch
         public void Run()
         {
             HttpClient api = new HttpClient();
-            api.BaseAddress = new Uri("http://localhost:5109");
             //SearchLogic mSearchLogic = new SearchLogic(new Database());
             Console.WriteLine("Console Search");
             
@@ -22,8 +21,10 @@ namespace ConsoleSearch
                 string input = Console.ReadLine() ?? string.Empty;
                 if (input.Equals("q")) break;
 
-                Task<string> task = api.GetStringAsync("/Search?terms=" + input + "&numberOfResults=10");
+                Task<string> task = api.GetStringAsync("http://load-balancer/LoadBalancer?terms=" + input + "&numberOfResults=10");
+                Console.WriteLine("her til");
                 task.Wait();
+                Console.WriteLine("her til også");
                 string resultString = task.Result;
                 SearchResult result = JsonConvert.DeserializeObject<SearchResult>(resultString);
 

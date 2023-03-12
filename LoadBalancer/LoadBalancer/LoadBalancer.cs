@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LoadBalancer.LoadBalancer
 {
     public class LoadBalancer : ILoadBalancer
     {
         private ILoadBalancerStrategy? _strategy;
-        private readonly List<string> urls = new();
+        private static readonly List<string> urls = new();
         private static LoadBalancer? _instance;
 
         private LoadBalancer()
@@ -24,6 +26,12 @@ namespace LoadBalancer.LoadBalancer
         public int AddService(string? url)
         {
             urls.Add(url);
+            Console.WriteLine(GetAllServices().Count);
+            if (urls.Count>1)
+            {
+                Console.WriteLine(GetAllServices().First());
+            }
+            Console.WriteLine(GetAllServices().First());
             return urls.Count - 1;
         }
 
@@ -45,7 +53,8 @@ namespace LoadBalancer.LoadBalancer
 
         public string? NextService()
         {
-            return _strategy?.NextService(GetAllServices());
+            Console.WriteLine("hallo");
+            return GetAllServices().First();
         }
     }
 }

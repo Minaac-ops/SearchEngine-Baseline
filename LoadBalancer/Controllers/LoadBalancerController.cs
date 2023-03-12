@@ -1,6 +1,11 @@
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Common;
 using LoadBalancer.LoadBalancer;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace LoadBalancer.Controllers
 {
@@ -13,7 +18,8 @@ namespace LoadBalancer.Controllers
         {
             LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new RoundRobinStrategy());
         }
-
+        
+        [EnableCors("AllowAllOrigins")]
         [HttpPost]
         public int AddService([FromBody] ApiProp apiProp)
         {
@@ -21,5 +27,22 @@ namespace LoadBalancer.Controllers
             return LoadBalancer.LoadBalancer.GetInstance().AddService(apiProp.Url);
         }
 
+        [EnableCors("AllowCrossOrigin")]
+        [HttpGet]
+        public async Task<SearchResult> Search(string terms,int numberOfResults)
+        {
+            Console.WriteLine("Her til balancercontroller!");
+            HttpClient api = new HttpClient();
+            
+            api.BaseAddress = new Uri(LoadBalancer.LoadBalancer.GetInstance().NextService() ?? throw new InvalidOperationException());
+            Console.WriteLine(api.BaseAddress);
+            Task<string> task = api.GetStringAsync("/Search?terms=" + terms + "&numberOfResults=" + numberOfResults);
+            task.Wait();
+
+            string resultString = task.Result;
+            SearchResult? result = JsonConvert.DeserializeObject<SearchResult>(resultString);
+
+            return result;
+        }
     }
 }
