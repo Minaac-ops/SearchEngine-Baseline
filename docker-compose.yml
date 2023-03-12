@@ -14,7 +14,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: "Websearch/Dockerfile"
+      dockerfile: "WebSearch/Dockerfile"
     ports:
       - 9001:80
     depends_on:
