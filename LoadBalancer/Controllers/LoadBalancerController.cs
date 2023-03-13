@@ -42,7 +42,7 @@ namespace LoadBalancer.Controllers
 
             foreach (var VARIABLE in result.Documents)
             {
-                Console.WriteLine(VARIABLE);
+                Console.WriteLine(VARIABLE.Path);
             }
             return result;
         }

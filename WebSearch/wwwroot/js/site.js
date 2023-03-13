@@ -16,7 +16,7 @@ let ViewModel = function () {
         $.ajax({
             url: "http://localhost:9011/LoadBalancer?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function(data) {
-                me.hits(data.documents);
+                me.hits(data.documents.length);
                 me.timeUsed(data.elapsedMilliseconds);
                 me.results.removeAll();
                 data.documents.forEach(function(hit) {
