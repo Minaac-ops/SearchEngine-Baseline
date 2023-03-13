@@ -6,7 +6,7 @@ namespace LoadBalancer.LoadBalancer
 {
     public class LoadBalancer : ILoadBalancer
     {
-        private ILoadBalancerStrategy? _strategy;
+        private RoundRobinStrategy _strategy = new RoundRobinStrategy();
         private static readonly List<string> urls = new();
         private static LoadBalancer? _instance;
 
@@ -26,12 +26,7 @@ namespace LoadBalancer.LoadBalancer
         public int AddService(string? url)
         {
             urls.Add(url);
-            Console.WriteLine(GetAllServices().Count);
-            if (urls.Count>1)
-            {
-                Console.WriteLine(GetAllServices().First());
-            }
-            Console.WriteLine(GetAllServices().First());
+            Console.WriteLine(GetAllServices());
             return urls.Count - 1;
         }
 
@@ -48,13 +43,12 @@ namespace LoadBalancer.LoadBalancer
 
         public void SetActiveStrategy(ILoadBalancerStrategy? strategy)
         {
-            this._strategy = strategy;
+            
         }
 
         public string? NextService()
         {
-            Console.WriteLine("hallo");
-            return GetAllServices().First();
+            return _strategy.NextService(urls);
         }
     }
 }

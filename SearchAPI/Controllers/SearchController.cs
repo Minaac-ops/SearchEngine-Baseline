@@ -57,8 +57,6 @@ namespace SearchAPI.Controllers
                 });
                 idx++;
             }
-
-            Console.WriteLine(result);
             return result;
         }
     }

@@ -29,21 +29,15 @@ namespace LoadBalancer.Controllers
         [HttpGet]
         public async Task<SearchResult> Search(string terms,int numberOfResults)
         {
-            Console.WriteLine("Her til balancercontroller!");
             HttpClient api = new HttpClient();
             
             api.BaseAddress = new Uri(LoadBalancer.LoadBalancer.GetInstance().NextService() ?? throw new InvalidOperationException());
-            Console.WriteLine(api.BaseAddress);
+            Console.WriteLine("Chose service at url: "+api.BaseAddress);
             Task<string> task = api.GetStringAsync("/Search?terms=" + terms + "&numberOfResults=" + numberOfResults);
             task.Wait();
 
             string resultString = task.Result;
             SearchResult? result = JsonConvert.DeserializeObject<SearchResult>(resultString);
-
-            foreach (var VARIABLE in result.Documents)
-            {
-                Console.WriteLine(VARIABLE.Path);
-            }
             return result;
         }
     }

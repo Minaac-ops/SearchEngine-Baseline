@@ -22,8 +22,6 @@ let ViewModel = function () {
                 data.documents.forEach(function(hit) {
                     me.results.push(hit);
                 });
-                console.log(me.hits());
-                console.log(me.timeUsed());
             }
         });
         
