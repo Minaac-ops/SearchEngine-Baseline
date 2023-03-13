@@ -6,7 +6,7 @@ namespace LoadBalancer.LoadBalancer
 {
     public class LoadBalancer : ILoadBalancer
     {
-        private RoundRobinStrategy _strategy = new RoundRobinStrategy();
+        private ILoadBalancerStrategy _strategy;
         private static readonly List<string> urls = new();
         private static LoadBalancer? _instance;
 
@@ -43,7 +43,7 @@ namespace LoadBalancer.LoadBalancer
 
         public void SetActiveStrategy(ILoadBalancerStrategy? strategy)
         {
-            
+            _strategy = strategy;
         }
 
         public string? NextService()
