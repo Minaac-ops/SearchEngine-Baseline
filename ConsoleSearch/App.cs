@@ -21,7 +21,7 @@ namespace ConsoleSearch
                 string input = Console.ReadLine() ?? string.Empty;
                 if (input.Equals("q")) break;
 
-                Task<string> task = api.GetStringAsync("http://load-balancer/LoadBalancer?terms=" + input + "&numberOfResults=10");
+                Task<string> task = api.GetStringAsync("http://localhost:9011/LoadBalancer?terms=" + input + "&numberOfResults=10");
                 Console.WriteLine("her til");
                 task.Wait();
                 Console.WriteLine("her til også");
