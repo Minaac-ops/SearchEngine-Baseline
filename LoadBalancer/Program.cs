@@ -23,8 +23,6 @@ var app = builder.Build();
 
 //cors
 
-LoadBalancer.LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new RoundRobinStrategy());
-
 app.UseCors(config => config.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 //app.UseHttpsRedirection();

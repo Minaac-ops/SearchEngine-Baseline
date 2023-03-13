@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Common;
 using LoadBalancer.LoadBalancer;
+using LoadBalancer.LoadBalancer.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,14 +14,13 @@ namespace LoadBalancer.Controllers
     [Route("[controller]")]
     public class LoadBalancerController : ControllerBase
     {
-
         public LoadBalancerController()
         {
-            LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new RoundRobinStrategy());
+            LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new LeastConnectionsStrategy());
         }
         
         [HttpPost]
-        public int AddService([FromBody] ApiProp apiProp)
+        public int AddService([FromBody] Service apiProp)
         {
             Console.WriteLine("Adding service at url " + apiProp.Url);
             return LoadBalancer.LoadBalancer.GetInstance().AddService(apiProp.Url);
@@ -38,6 +38,7 @@ namespace LoadBalancer.Controllers
 
             string resultString = task.Result;
             SearchResult? result = JsonConvert.DeserializeObject<SearchResult>(resultString);
+            LoadBalancer.LoadBalancer.GetInstance().CloseConnection(api.BaseAddress.ToString());
             return result;
         }
     }
