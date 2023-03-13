@@ -11,30 +11,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowCrossOrigin",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost/9001",
-                    "http://load-balancer")
-                .AllowAnyHeader()
-                .WithMethods("GET");
-        });
-});
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAllOrigins",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .WithMethods("POST");
-        });
-});
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,10 +22,7 @@ var app = builder.Build();
 
 //cors
 
-app.UseCors(config =>
-{
-    config.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-});
+app.UseCors(config => config.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
 //app.UseHttpsRedirection();
 

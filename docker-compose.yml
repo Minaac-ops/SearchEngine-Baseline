@@ -16,10 +16,17 @@ services:
       context: .
       dockerfile: "WebSearch/Dockerfile"
     ports:
-      - 9001:80
+      - 9001-9010:80
     depends_on:
       - load-balancer
+    deploy:
+      replicas: 1
   load-balancer:
     build:
       context: .
       dockerfile: LoadBalancer/Dockerfile
+    ports:
+      - 9011:80
+    deploy:
+      replicas: 1
+    

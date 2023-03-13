@@ -19,7 +19,6 @@ namespace LoadBalancer.Controllers
             LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new RoundRobinStrategy());
         }
         
-        [EnableCors("AllowAllOrigins")]
         [HttpPost]
         public int AddService([FromBody] ApiProp apiProp)
         {
@@ -27,7 +26,6 @@ namespace LoadBalancer.Controllers
             return LoadBalancer.LoadBalancer.GetInstance().AddService(apiProp.Url);
         }
 
-        [EnableCors("AllowCrossOrigin")]
         [HttpGet]
         public async Task<SearchResult> Search(string terms,int numberOfResults)
         {
@@ -42,6 +40,10 @@ namespace LoadBalancer.Controllers
             string resultString = task.Result;
             SearchResult? result = JsonConvert.DeserializeObject<SearchResult>(resultString);
 
+            foreach (var VARIABLE in result.Documents)
+            {
+                Console.WriteLine(VARIABLE);
+            }
             return result;
         }
     }

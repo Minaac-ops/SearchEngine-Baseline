@@ -14,18 +14,19 @@ let ViewModel = function () {
     
     me.search = function() {
         $.ajax({
-            url: "http://load-balancer/LoadBalancer?terms=" + me.searchTerms() + "&numberOfResults=10",
+            url: "http://localhost:9011/LoadBalancer?terms=" + me.searchTerms() + "&numberOfResults=10",
             success: function(data) {
-                me.hits(data.Hits);
-                me.timeUsed(data.TimeUsed);
+                me.hits(data.documents);
+                me.timeUsed(data.elapsedMilliseconds);
                 me.results.removeAll();
-                data.DocumentHits.forEach(function(hit) {
+                data.documents.forEach(function(hit) {
                     me.results.push(hit);
                 });
                 console.log(me.hits());
                 console.log(me.timeUsed());
             }
         });
+        
     }
 
 };

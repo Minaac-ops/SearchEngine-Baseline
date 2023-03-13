@@ -12,7 +12,6 @@ namespace SearchAPI.Controllers
     [Route("[controller]")]
     public class SearchController : ControllerBase
     {
-        [EnableCors("AllowCrossOrigin")]
         [HttpGet]
         public async Task<SearchResult> Search(string terms, int numberOfResults)
         {
@@ -58,6 +57,8 @@ namespace SearchAPI.Controllers
                 });
                 idx++;
             }
+
+            Console.WriteLine(result);
             return result;
         }
     }
