@@ -16,7 +16,6 @@ namespace LoadBalancer.Controllers
     {
         public LoadBalancerController()
         {
-            LoadBalancer.LoadBalancer.GetInstance().SetActiveStrategy(new LeastConnectionsStrategy());
         }
         
         [HttpPost]
@@ -32,12 +31,13 @@ namespace LoadBalancer.Controllers
             HttpClient api = new HttpClient();
             
             api.BaseAddress = new Uri(LoadBalancer.LoadBalancer.GetInstance().NextService() ?? throw new InvalidOperationException());
-            Console.WriteLine("Chose service at url: "+api.BaseAddress + '('+DateTime.Now+')');
             Task<string> task = api.GetStringAsync("/Search?terms=" + terms + "&numberOfResults=" + numberOfResults);
             task.Wait();
 
             string resultString = task.Result;
-            LoadBalancer.LoadBalancer.GetInstance().CloseConnection(api.BaseAddress.ToString());
+            string toClose = api.BaseAddress.ToString();
+            string readyToClose = api.BaseAddress.ToString().Remove(toClose.Length - 1, 1);
+            LoadBalancer.LoadBalancer.GetInstance().CloseConnection(readyToClose);
             SearchResult? result = JsonConvert.DeserializeObject<SearchResult>(resultString);
             return result;
         }

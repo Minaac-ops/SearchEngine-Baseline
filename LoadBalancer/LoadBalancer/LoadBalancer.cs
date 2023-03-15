@@ -12,7 +12,7 @@ namespace LoadBalancer.LoadBalancer
         private static LoadBalancer? _instance;
 
         private LoadBalancer()
-        { }
+        { SetActiveStrategy(new LeastConnectionsStrategy(GetAllServices()));}
 
         public static LoadBalancer GetInstance()
         {

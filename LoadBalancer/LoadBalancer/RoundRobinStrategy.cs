@@ -13,6 +13,7 @@ namespace LoadBalancer.LoadBalancer
         {
             if (_requestNo == services.Count) _requestNo = 0;
             var nextService = services[_requestNo];
+            Console.WriteLine("Chose service at: " + nextService);
             _requestNo++;
             return nextService.Url;
         }
