@@ -14,7 +14,7 @@ namespace LoadBalancer.LoadBalancer
             _services = services;
             var minConnection = services.MinBy(s => s.Connections) ?? services.First();
 
-            minConnection.Connections = int.MaxValue;
+            minConnection.Connections++;
             Console.WriteLine("url: "+minConnection.Url + ", connections: "+ minConnection.Connections);
             return minConnection.Url;
         }
@@ -25,9 +25,8 @@ namespace LoadBalancer.LoadBalancer
             {
                 if (service.Url == url)
                 {
-                    var releaseValue = service.Connections - int.MaxValue;
+                    var releaseValue = service.Connections - 1;
                     service.Connections = releaseValue;
-                    service.Connections++;
                     Console.WriteLine("Url " + url + " has " + service.Connections + " after release.");
                 }
             }
