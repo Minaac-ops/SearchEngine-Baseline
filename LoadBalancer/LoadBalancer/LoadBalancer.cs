@@ -33,10 +33,6 @@ namespace LoadBalancer.LoadBalancer
                 Url = url
             };
             urls.Add(service);
-            foreach (var element in urls)
-            {
-                Console.WriteLine(element.Url);
-            }
             return (int) service.Id;
         }
 

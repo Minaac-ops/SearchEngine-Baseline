@@ -12,21 +12,25 @@ namespace LoadBalancer.LoadBalancer
         public string NextService(List<Service> services)
         {
             _services = services;
-            var minConnection = services.MinBy(s => s.Connections);
+            var minConnection = services.MinBy(s => s.Connections) ?? services.First();
 
-            if (minConnection == null) return services.First().Url;
-            
             minConnection.Connections = int.MaxValue;
+            Console.WriteLine("url: "+minConnection.Url + ", connections: "+ minConnection.Connections);
             return minConnection.Url;
         }
 
         public void CloseConnection(string url)
         {
-            var serviceToRelease = _services.FirstOrDefault(service => service.Url == url);
-            if (serviceToRelease == null) return;
-            var releaseValue = serviceToRelease.Connections - int.MaxValue;
-            serviceToRelease.Connections = releaseValue;
-            serviceToRelease.Connections++;
+            foreach (var service in _services)
+            {
+                if (service.Url == url)
+                {
+                    var releaseValue = service.Connections - int.MaxValue;
+                    service.Connections = releaseValue;
+                    service.Connections++;
+                    Console.WriteLine("Url " + url + " has " + service.Connections + " after release.");
+                }
+            }
         }
     }
 }
